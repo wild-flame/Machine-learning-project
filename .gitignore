@@ -24,3 +24,10 @@ node_modules
 # Temp File
 *.swp
 *.swa
+
+# some file created by emacs
+.#*
+
+# The data file I created by myself
+*.*.data
+

@@ -2,8 +2,9 @@ import os
 import nltk
 import collections
 import pickle
+import sys
 
-counter = 0
+counter = 0 # GOLABLE VARIABLES !!! 
 
 class Vector(object):
     """vector is where the vector was used in machine learning(svm)"""
@@ -30,7 +31,8 @@ class Vector(object):
         for word in bow:
             vec_list.append(words.count(word))
         counter = counter + 1
-        print counter
+        print  '\r>> You have finished {0} % ({1}/400)'.format(counter/4,counter),
+        sys.stdout.flush()
         return vec_list
 
 class Document(object):
@@ -84,9 +86,19 @@ class BOW(object):
         for words in words_list:
             self._bows |= set(words)
 
+# ======================================= #
+# ================ MAIN ================= #
+# ======================================= #
+
 # INITAILIZING TO BUILD THE INPUT
 
 if __name__ == "__main__":
+
+    def dump_data(object,filename):
+       #TODO: Export the data as json instead of object.
+        f = open(filename,"w")
+        pickle.dump(object,f)
+        f.close()
 
     vectors_atheism = []
     vectors_sports = []
@@ -94,11 +106,11 @@ if __name__ == "__main__":
     Atheism = Document("data/train/atheism") # The srcpath can be write in when create the instance
     Atheism.read_dir()
 
-    print("{0} file is loaded from {1}".format(len(Atheism.pathnames),Atheism.srcpath))
-  
+    print("{0} file is loading from {1}".format(len(Atheism.pathnames),Atheism.srcpath))
+
     Sports = Document("data/train/sports")
     Sports.read_dir()
-    print("{0} file is loaded from {1}".format(len(Sports.pathnames),Sports.srcpath))
+    print("{0} file is loading from {1}".format(len(Sports.pathnames),Sports.srcpath))
 
     # LIST OF THE WORDS IN A DICT: for each file read, check the words in the dictionary or not.
     dictionary = BOW(Atheism.words, Sports.words)
@@ -106,73 +118,28 @@ if __name__ == "__main__":
 
     # Building the vector through document.
     for filename in Atheism.pathnames:
-        vectors_atheism = vectors_atheism.append(Vector(filename,bow))
+        vectors_atheism.append(Vector(filename,bow))
 
     for filename in Sports.pathnames:
-        vectors_sports = vectors_sports.append(Vector(filename,bow))
+        vectors_sports.append(Vector(filename,bow))
 
-    # The peceptro algorithm
-    f = file.open("atheism.vector.data","w")
-    pickel.dump(vectors_atheism.f)
-    f.close()
-    f = file.open("sports.vector.data","w")
-    pickel.dump(sports_atheism.f)
-    f.close()
+    print("dumping data in progress")
+    dump_data(vectors_atheism,"atheism.vector.data")
+    dump_data(vectors_sports,"sports.vector.data")
 
-def dot_product(values, weights):
-    return sum(value * weight for value, weight in zip(values, weights))
+    def convert_testdata_to_vector(pathname,bow):
+        vector_l = []
+        doc = Document(pathname)
+        doc.read_dir()
+        print("{0} file is loading from {1}".format(len(doc.pathnames),doc.srcpath))
+        for filename in doc.pathnames:
+            vector_l.append(Vector(filename,bow))
+        return vector_l
 
-def perceptro(training_set):
-    threshold = 0
-    learning_rate = 0.1
-    weights = [1, 0, 0]
-    training_set = [((1, 0, 0), 1), ((1, 0 , 1), 1), ((1, 1, 0), 1), ((1, 1, 1), -1)]
-    while True:
-        print('-' * 60)
-        error_count = 0
-        for input_vector, desired_output in training_set:
-            print(weights)
-            result = dot_product(input_vector, weights) > threshold
-            if result == True:
-                output = 1
-            else:
-                output = -1
-            print "result is {0}, output is {1}, desired_output is {2} ".format(result,output, desired_output)
-            if output != desired_output:
-                error_count += 1
-                print('**updating weight**')
-                for index, value in enumerate(input_vector):
-                    weights[index] = weights[index] + desired_output * value
-        if error_count == 0:
-            break
+    vectors_atheism_test = convert_testdata_to_vector("data/test/atheism",bow)
+    vectors_sports_test = convert_testdata_to_vector("data/test/sports",bow)
 
-# perceptro(training_set)
-
-# print weights
+    dump_data(vectors_atheism_test,"atheism_test.vector.data")
+    dump_data(vectors_sports_test,"sports_test.vector.data")
 
 # TODO: write the unit test: 1. Atheism should not be empty
-
-
-
-Atheism = Document("data/train/atheism") # The srcpath can be write in when create the instance
-Atheism.read_dir()
-
-print("{0} file is loaded from {1}".format(len(Atheism.pathnames),Atheism.srcpath))
-
-Sports = Document("data/train/sports")
-Sports.read_dir()
-print("{0} file is loaded from {1}".format(len(Sports.pathnames),Sports.srcpath))
-
-# LIST OF THE WORDS IN A DICT: for each file read, check the words in the dictionary or not.
-dictionary = BOW(Atheism.words, Sports.words)
-bow = dictionary._bows
-
-vectors_atheism = []
-vectors_sports = []
-
-# Building the vector through document.
-for filename in Atheism.pathnames:
-    vectors_atheism.append(Vector(filename,bow))
-
-for filename in Sports.pathnames:
-    vectors_sports.append(Vector(filename,bow))

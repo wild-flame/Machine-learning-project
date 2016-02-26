@@ -1,10 +1,12 @@
-* Machine-learning-project-Perceptro
+* Machine-learning-project-Perceptron
 
-Machine learning project Perceptro.
+Machine learning project Perceptron.
 
 Not an ineteresting project... Just for safety purpose on github. 
 
-* Pecerptro result
+* Peceptron result
+
+** General
 
 |       | Atheism | Sports |  sum |
 |-------+---------+--------+------|
@@ -13,3 +15,7 @@ Not an ineteresting project... Just for safety purpose on github.
 | sum   |     800 |    800 | 1600 |
 
 Acuracy = 93.00%
+
+** Averaged 
+
+

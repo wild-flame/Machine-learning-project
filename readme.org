@@ -1,0 +1,15 @@
+* Machine-learning-project-Perceptro
+
+Machine learning project Perceptro.
+
+Not an ineteresting project... Just for safety purpose on github. 
+
+* Pecerptro result
+
+|       | Atheism | Sports |  sum |
+|-------+---------+--------+------|
+| Right |     763 |    725 | 1488 |
+| Wrong |      37 |     75 |  112 |
+| sum   |     800 |    800 | 1600 |
+
+Acuracy = 93.00%

@@ -9,7 +9,7 @@ def dot_product(values, weights):
 def perceptro(training_set):
     threshold = 0
     learning_rate = 0.1
-    bias = 9
+    bias = 0
     weights = list(training_set[0][0])
     training_set = training_set
     counter = 0
@@ -73,6 +73,8 @@ def averaged_perceptro(training_set):
     bias = bias - cached_bias / counter 
 
     return weights, bias
+
+list = []
 
 # ======================================= #
 # ================ MAIN ================= #

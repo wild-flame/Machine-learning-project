@@ -1,5 +1,7 @@
 import unittest
 import perceptron
+import gradient_decent
+from test import test_support
 # from bag_of_words import *
 
 # Atheism = Document("data/train/atheism")
@@ -23,7 +25,7 @@ class TestPerceptroMethod(unittest.TestCase):
         weights, bias = perceptron.perceptro(training_set)
         print weights, bias
         self.assertIsInstance(weights, list)
-        self.assertIsInstance(bias, int)
+        self.assertIsInstance(bias, int) 
 
     def test_perceptron_average(self):
         print("==============test_perceptron_average=========")
@@ -32,7 +34,21 @@ class TestPerceptroMethod(unittest.TestCase):
         weights, bias = perceptron.averaged_perceptro(training_set)
         print weights, bias
         self.assertIsInstance(weights, list)
-        self.assertIsInstance(bias, int)
+        self.assertIsInstance(bias, float)
+
+class TestGradientMethod(unittest.TestCase):
+
+    def test_gradient(self):
+        print("==============test_gradient=========")
+        weights = [0,0,0]
+        training_set = [((1, 0, 0), 1), ((1, 0, 1), 1), ((1, 1, 0), 1), ((1, 1, 1), -1)]
+        weights, bias = gradient_decent.gradient_decent(training_set)
+
+
+def test_main():
+    test_support.run_unittest(TestGradientMethod
+                                   # ,MyTestCase2
+    )
 
 if __name__ == '__main__':
-    unittest.main()
+    test_main()

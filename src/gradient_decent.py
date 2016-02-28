@@ -57,6 +57,8 @@ list = []
 if __name__ == "__main__":
     from bag_of_words import Vector
 
+    DATA_PATH = "../data"
+
     def read_data(filename):
         #TODO: load the data as json instead of object.
 
@@ -77,8 +79,8 @@ if __name__ == "__main__":
                 error_count += 1
         print "TEST RESULT: {0} is Atheism while {1} is Sports".format(true_count,error_count)
 
-    vectors_atheism = read_data("atheism.vector.data")
-    vectors_sports =read_data("sports.vector.data")
+    vectors_atheism = read_data(DATA_PATH + "atheism.vector.data")
+    vectors_sports =read_data(DATA_PATH + "sports.vector.data")
     training_vector = []
 
     for vector in vectors_atheism:
@@ -91,12 +93,12 @@ if __name__ == "__main__":
     # percp_weights,bias = averaged_perceptro(training_vector)
     percp_weights, bias = gradient_decent(training_vector)
 
-    f = open("gradient_weights.json",'w')
+    f = open(DATA_PATH + "gradient_weights.json",'w')
     json.dump((percp_weights,bias),f)
     f.close()
 
-    vectors_atheism_test = read_data("atheism_test.vector.data")
-    vectors_sports_test = read_data("sports_test.vector.data")
+    vectors_atheism_test = read_data(DATA_PATH + "atheism_test.vector.data")
+    vectors_sports_test = read_data(DATA_PATH + "sports_test.vector.data")
 
     classify(vectors_atheism,percp_weights,bias)
     classify(vectors_sports,percp_weights,bias)

@@ -6,6 +6,7 @@ import sys
 
 counter = 0 # GOLABLE VARIABLES !!! 
 
+
 class Vector(object):
     """vector is where the vector was used in machine learning(svm)"""
     def __init__(self, filename, bow):
@@ -30,8 +31,8 @@ class Vector(object):
         vec_list = []
         for word in bow:
             vec_list.append(words.count(word))
+        print  '\r>> You have finished {0} )'.format(counter),
         counter = counter + 1
-        print  '\r>> You have finished {0} % ({1}/400)'.format(counter/4,counter),
         sys.stdout.flush()
         return vec_list
 
@@ -75,9 +76,11 @@ class Document(object):
     "TODO:def write_csv:"
     "TODO:def read_csv:"
 
+    "
     def get_vectors(self):
         for filename in self.filenams:
             vec = Vector()
+    "
 
 class BOW(object):
     """This is the bag-of-word object"""
@@ -94,6 +97,8 @@ class BOW(object):
 
 if __name__ == "__main__":
 
+    DATA_PATH = "../data"
+
     def dump_data(object,filename):
        #TODO: Export the data as json instead of object.
         f = open(filename,"w")
@@ -103,12 +108,12 @@ if __name__ == "__main__":
     vectors_atheism = []
     vectors_sports = []
 
-    Atheism = Document("data/train/atheism") # The srcpath can be write in when create the instance
+    Atheism = Document(DATA_PATH + "data/train/atheism") # The srcpath can be write in when create the instance
     Atheism.read_dir()
 
     print("{0} file is loading from {1}".format(len(Atheism.pathnames),Atheism.srcpath))
 
-    Sports = Document("data/train/sports")
+    Sports = Document(DATA_PATH + "data/train/sports")
     Sports.read_dir()
     print("{0} file is loading from {1}".format(len(Sports.pathnames),Sports.srcpath))
 
@@ -124,8 +129,8 @@ if __name__ == "__main__":
         vectors_sports.append(Vector(filename,bow))
 
     print("dumping data in progress")
-    dump_data(vectors_atheism,"atheism.vector.data")
-    dump_data(vectors_sports,"sports.vector.data")
+    dump_data(vectors_atheism,DATA_PATH + "atheism.vector.data")
+    dump_data(vectors_sports,DATA_PATH + "sports.vector.data")
 
     def convert_testdata_to_vector(pathname,bow):
         vector_l = []
@@ -136,10 +141,8 @@ if __name__ == "__main__":
             vector_l.append(Vector(filename,bow))
         return vector_l
 
-    vectors_atheism_test = convert_testdata_to_vector("data/test/atheism",bow)
-    vectors_sports_test = convert_testdata_to_vector("data/test/sports",bow)
+    vectors_atheism_test = convert_testdata_to_vector(DATA_PATH + "data/test/atheism",bow)
+    vectors_sports_test = convert_testdata_to_vector(DATA_PATH + "data/test/sports",bow)
 
-    dump_data(vectors_atheism_test,"atheism_test.vector.data")
-    dump_data(vectors_sports_test,"sports_test.vector.data")
-
-# TODO: write the unit test: 1. Atheism should not be empty
+    dump_data(vectors_atheism_test, DATA_PATH + "atheism_test.vector.data")
+    dump_data(vectors_sports_test, DATA_PATH + "sports_test.vector.data")

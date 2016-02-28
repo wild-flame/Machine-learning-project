@@ -30,4 +30,4 @@ node_modules
 
 # The data file I created by myself
 *.*.data
-
+/data

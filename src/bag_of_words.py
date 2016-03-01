@@ -6,7 +6,6 @@ import sys
 
 counter = 0 # GOLABLE VARIABLES !!! 
 
-
 class Vector(object):
     """vector is where the vector was used in machine learning(svm)"""
     def __init__(self, filename, bow):
@@ -73,14 +72,14 @@ class Document(object):
         self.numdocs += 1
         return nltk.word_tokenize(text)
 
-    "TODO:def write_csv:"
-    "TODO:def read_csv:"
+    #TODO:def write_csv:"
+    #TODO:def read_csv:"
 
-    "
+    """
     def get_vectors(self):
         for filename in self.filenams:
             vec = Vector()
-    "
+    """
 
 class BOW(object):
     """This is the bag-of-word object"""
@@ -97,7 +96,7 @@ class BOW(object):
 
 if __name__ == "__main__":
 
-    DATA_PATH = "../data"
+    DATA_PATH = "../data/"
 
     def dump_data(object,filename):
        #TODO: Export the data as json instead of object.
@@ -105,7 +104,18 @@ if __name__ == "__main__":
         pickle.dump(object,f)
         f.close()
 
-    vectors_atheism = []
+    def convert_testdata_to_vector(pathname,bow):
+        vector_l = []
+        doc = Document(pathname)
+        doc.read_dir()
+        print("{0} file is loading from {1}".format(len(doc.pathnames),doc.srcpath))
+        for filename in doc.pathnames:
+            vector_l.append(Vector(filename,bow))
+        return vector_l
+
+# FUNCTIONS
+
+    vectors_atheism = [] 
     vectors_sports = []
 
     Atheism = Document(DATA_PATH + "data/train/atheism") # The srcpath can be write in when create the instance
@@ -119,7 +129,7 @@ if __name__ == "__main__":
 
     # LIST OF THE WORDS IN A DICT: for each file read, check the words in the dictionary or not.
     dictionary = BOW(Atheism.words, Sports.words)
-    bow = dictionary._bows
+    bow = list(dictionary._bows)
 
     # Building the vector through document.
     for filename in Atheism.pathnames:
@@ -132,14 +142,6 @@ if __name__ == "__main__":
     dump_data(vectors_atheism,DATA_PATH + "atheism.vector.data")
     dump_data(vectors_sports,DATA_PATH + "sports.vector.data")
 
-    def convert_testdata_to_vector(pathname,bow):
-        vector_l = []
-        doc = Document(pathname)
-        doc.read_dir()
-        print("{0} file is loading from {1}".format(len(doc.pathnames),doc.srcpath))
-        for filename in doc.pathnames:
-            vector_l.append(Vector(filename,bow))
-        return vector_l
 
     vectors_atheism_test = convert_testdata_to_vector(DATA_PATH + "data/test/atheism",bow)
     vectors_sports_test = convert_testdata_to_vector(DATA_PATH + "data/test/sports",bow)

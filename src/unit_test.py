@@ -1,6 +1,6 @@
 import unittest
 import perceptron
-import gradient_decent
+import gradient_descent
 from test import test_support
 # from bag_of_words import *
 

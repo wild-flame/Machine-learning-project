@@ -1,21 +1,102 @@
-* Machine-learning-project-Perceptron
+#+TITLE: Machine Learning - Assignment 1
+#+DATE: <2016-02-28 日>
+#+AUTHOR: Dongwen Lin 
+#+EMAIL: dongwen_lin@mymail.sutd.edu.sg 
+#+OPTIONS: num:t p:nil pri:nil stat:t tags:t tasks:t tex:t timestamp:t toc:2
+#+CREATOR: Emacs 24.5.1 (Org mode 8.2.10)
+#+DESCRIPTION: Machine Learning Assignment 1
+#+EXCLUDE_TAGS: noexport
+#+KEYWORDS: Perceptron, SGD
+#+LANGUAGE: en
+#+SELECT_TAGS: export
+#+DATE: <2016-02-28 日>
+#+OPTIONS: texht:t
+#+LATEX_CLASS: article
+#+LATEX_CLASS_OPTIONS:
+#+LATEX_HEADER:
+#+LATEX_HEADER_EXTRA:
+* Machine-learning
 
-Machine learning project Perceptron.
+Not all testing result are in this report, but all the essential result related are showed here. If you interested in other result, check the full [[https://docs.google.com/spreadsheets/d/1zHgdz07Msig1x4lMQ8jzV9ltKxHqF--L9kvw6UIMT2Y/edit?usp%3Dsharing][Original Result]]: https://goo.gl/8ihA5B
 
-Not an ineteresting project... Just for safety purpose on github. 
+** Question 1
 
-* Peceptron result
+*Discuss how to formulate this task as a classification problem – describe what are the inputs (x) and what are the outputs (y). Discuss how you would convert the input data into vector representations using the approach discussed in class.*
 
-** General
+*** Answer
 
-|       | Atheism | Sports |  sum |
-|-------+---------+--------+------|
-| Right |     763 |    725 | 1488 |
-| Wrong |      37 |     75 |  112 |
-| sum   |     800 |    800 | 1600 |
+There are many ways to reprensent the features of an article(email). However the
+easiest way is to just count the frequency of the words of on article regarding
+to a dictionary. And this approach is generally called *The bag of words* (BOW). 
 
-Acuracy = 93.00%
+To make it simple, what I will do is just split all the strings in to words in all the article, and union them into a /set/ of words ( /set/ means /no replication/) as the bag. Then counting the frequency of each words in an article as represent it as a vector.
 
-** Averaged 
+Then each article would be converted into a column vector, as the input ($\vec{x}$). As for the output($y$), for binary cases when there are only two categories (A and B), then $y$ will only be +1 or -1 to represent two different categories. If $y = +1$, the article would belongs to category A, while if $y = -1$, it would belongs to category B.
 
+** Question 2
+
+*Consider only the documents that appeared in these two sub-folders: atheism and sports (i.e., ignore documents from science and politics for now). Implement the perceptron algorithm to perform binary classification based on the data from these two sub-folders. Evaluate the model’s performance on the training and test set respectively. Discuss clearly in your report when to stop the algorithm and whether this has any effect on the performance on the test set. Try to use the averaged perceptron algorithm discussed in class, and report the performance when such an algorithm is used. Compare its performance with that of the standard version of the perceptron.*
+
+*** Answer
+
+#+CAPTION: Perceptron (Acuracy = 93.00%)
+#+NAME: tab:perceptron-data
+|---+-------+---------+--------+--------|
+|   |       | Atheism | Sports |        |
+|---+-------+---------+--------+--------|
+|   | Right |     763 |    725 |   1488 |
+|   | Wrong |      37 |     75 |    112 |
+|---+-------+---------+--------+--------|
+|   | sum   |     800 |    800 | 93.00% |
+|---+-------+---------+--------+--------|
+
+#+CAPTION: Perceptron Averaged 
+#+NAME: tab:perceptron-averaged-data
+|-------+---------+-----------+--------+---------+------------+--------|
+|       |         | Test Data |        |         | Train Data |        |
+| /     |       < | <l>       |      > |       < | <l>        |        |
+|-------+---------+-----------+--------+---------+------------+--------|
+|       | Atheism | Sports    |    Sum | Atheism | Sports     |    Sum |
+|-------+---------+-----------+--------+---------+------------+--------|
+| Right |     753 | 704       |   1457 |     194 | 196        |    390 |
+| Wrong |      47 | 96        |    143 |       6 | 4          |     10 |
+|-------+---------+-----------+--------+---------+------------+--------|
+|       |     800 | 800       | 91.06% |     200 | 200        | 97.50% |
+|-------+---------+-----------+--------+---------+------------+--------|
+    
+Although an academic literature [fn:1] point out that averaged perceptron is almost always better than perceptron, our case is not. As is shown in table [[tab:perceptron-data]] and [[tab:perceptron-averaged-data]] the performance of original perceptron is slightly better.
+
+As for the iterations, since perceptron require the training example to be linear separable, and we did not involve any randomness into the training set. The result will always be the same after convergence. 
+
+However, if we stop the algorithm earlier before convergence. The result would be different. Sometimes, the result would be better because it avoid over-fitting.
+
+** Question 3
+   
+*Implement the stochastic gradient descent algorithm that minimizes the empirical risk involv- ing the hinge loss to tackle the same binary classification problem. Evaluate your model’s performance using the test data. Discuss its learning behavior: the effect of using different learning rates, how fast the algorithm converges. Discuss when to stop the algorithm and whether this has any effect on the performance on the test set. Also compare its performance with that of the perceptron.*
+
+*** Answer
+
+#+CAPTION: Gradient Decent 
+#+NAME: tab:gradient-decent-data
+|------+---------------+-----------+------------+-----------+------------|
+| iter | learning rate | Test Data | Train Data | Best Loss | Final Loss |
+|    / |         <6> < |         < |            |         < |            |
+|------+---------------+-----------+------------+-----------+------------|
+|   10 |           0.1 |    93.50% |     99.75% |      17.2 |     1411.0 |
+|   10 |             1 |    87.44% |     96.75% |    2281.0 |    10412.0 |
+|   10 |            10 |    93.63% |     99.75% |   23504.0 |    23504.0 |
+|   10 |           100 |    93.13% |     99.25% |   13802.0 |   273007.0 |
+|   20 |           0.1 |    92.25% |       100% |         0 |          0 |
+|   20 |             1 |    86.82% |       100% |        77 |         77 |
+|------+---------------+-----------+------------+-----------+------------|
+
+The graph shows that onlyo
+
+#+BEGIN_LaTeX
+\input{graph_loss.tex}
+#+END_LaTeX
+
+* Footnotes
+
+[fn:1]:See http://www.ciml.info/dl/v0_8/ciml-v0_8-ch03.pdf
 
